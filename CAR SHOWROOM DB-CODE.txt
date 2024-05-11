@@ -1,0 +1,130 @@
+-- Create database named "showroom"
+CREATE DATABASE IF NOT EXISTS showroom;
+USE showroom;
+
+-- Create Cars table
+CREATE TABLE IF NOT EXISTS Cars (
+    car_id INT AUTO_INCREMENT PRIMARY KEY,
+    model VARCHAR(100),
+    type VARCHAR(100),
+    color VARCHAR(50),
+    price DECIMAL(10, 2)
+);
+
+-- Create Customers table
+CREATE TABLE IF NOT EXISTS Customers (
+    customer_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100),
+    phone_number VARCHAR(20),
+    email VARCHAR(100),
+    address VARCHAR(255)
+);
+
+-- Create Salespersons table
+CREATE TABLE IF NOT EXISTS Salespersons (
+    salesperson_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100),
+    phone_number VARCHAR(20),
+    email VARCHAR(100),
+    performance_metrics VARCHAR(255)
+);
+
+-- Create Sales table
+CREATE TABLE IF NOT EXISTS Sales (
+    sale_id INT AUTO_INCREMENT PRIMARY KEY,
+    date DATE,
+    customer_id INT,
+    car_id INT,
+    salesperson_id INT,
+    sale_amount DECIMAL(10, 2),
+    FOREIGN KEY (customer_id) REFERENCES Customers(customer_id),
+    FOREIGN KEY (car_id) REFERENCES Cars(car_id),
+    FOREIGN KEY (salesperson_id) REFERENCES Salespersons(salesperson_id)
+);
+
+-- Create Inventory table
+CREATE TABLE IF NOT EXISTS Inventory (
+    inventory_id INT AUTO_INCREMENT PRIMARY KEY,
+    car_id INT,
+    quantity_available INT,
+    FOREIGN KEY (car_id) REFERENCES Cars(car_id)
+);
+
+-- Insert data into Cars table with prices and colors
+INSERT INTO Cars (model, type, color, price)
+VALUES
+    ('Toyota Camry', 'Sedan', 'Silver', 25000),
+    ('Honda Civic', 'Sedan', 'Blue', 22000),
+    ('Ford Mustang', 'Sports Car', 'Red', 35000),
+    ('Chevrolet Corvette', 'Sports Car', 'Black', 65000),
+    ('BMW 3 Series', 'Sedan', 'White', 40000),
+    ('Mercedes-Benz E-Class', 'Sedan', 'Gray', 55000),
+    ('Audi A4', 'Sedan', 'Silver', 45000),
+    ('Tesla Model S', 'Sedan', 'Blue', 80000),
+    ('Nissan Altima', 'Sedan', 'Black', 28000),
+    ('Hyundai Sonata', 'Sedan', 'Red', 27000),
+    ('Dodge Durango', 'SUV', 'Black', 32000),
+    ('Ford Focus', 'Sedan', 'Gray', 23000),
+    ('Chevrolet Camaro', 'Sports Car', 'Yellow', 45000),
+    ('Toyota Prius', 'Hatchback', 'Green', 27000),
+    ('Jeep Wrangler', 'SUV', 'Beige', 35000),
+    ('Honda CR-V', 'SUV', 'Silver', 32000),
+    ('BMW X5', 'SUV', 'Black', 60000),
+    ('Ford Escape', 'SUV', 'Blue', 28000),
+    ('Toyota Tacoma', 'Truck', 'Red', 32000),
+    ('Tesla Model 3', 'Electric', 'White', 45000),
+    ('Audi Q7', 'SUV', 'Gray', 70000);
+
+-- Insert data into Customers table
+INSERT INTO Customers (name, phone_number, email, address)
+VALUES
+    ('Ali Khan', '555-1234', 'ali@example.com', '123 Main St, Lahore, Pakistan'),
+    ('Ahmed Malik', '555-5678', 'ahmed@example.com', '456 Elm St, Karachi, Pakistan'),
+    ('Muhammad Ali', '555-9012', 'muhammad@example.com', '789 Oak St, Islamabad, Pakistan'),
+    ('Fatima Khan', '555-3456', 'fatima@example.com', '101 Pine St, Rawalpindi, Pakistan'),
+    ('Sana Khan', '555-7890', 'sana@example.com', '222 Maple St, Otherville, USA'),
+    ('Rizwan Mahmood', '555-2468', 'rizwan@example.com', '789 Elm St, Lahore, Pakistan'),
+    ('Ayesha Ali', '555-1357', 'ayesha@example.com', '456 Oak St, Karachi, Pakistan'),
+    ('Zubair Khan', '555-9876', 'zubair@example.com', '101 Maple St, Islamabad, Pakistan'),
+    ('Amna Ahmed', '555-3698', 'amna@example.com', '321 Pine St, Rawalpindi, Pakistan'),
+    ('Imran Khan', '555-7854', 'imran@example.com', '444 Cedar St, Faisalabad, Pakistan'),
+    ('Hina Khan', '555-7412', 'hina@example.com', '555 Walnut St, Lahore, Pakistan'),
+    ('Hamza Ali', '555-9632', 'hamza@example.com', '777 Oak St, Karachi, Pakistan'),
+    ('Nida Anwar', '555-8521', 'nida@example.com', '888 Maple St, Islamabad, Pakistan'),
+    ('Bilal Ahmed', '555-1236', 'bilal@example.com', '999 Pine St, Rawalpindi, Pakistan'),
+    ('Sadia Khan', '555-4568', 'sadia@example.com', '111 Cedar St, Faisalabad, Pakistan');
+
+-- Insert data into Salespersons table
+INSERT INTO Salespersons (name, phone_number, email, performance_metrics)
+VALUES
+    ('Usman Ahmed', '555-6789', 'usman@example.com', 'High customer satisfaction ratings'),
+    ('Saima Ali', '555-2345', 'saima@example.com', 'Top performer in Q2'),
+    ('Farhan Khan', '555-4321', 'farhan@example.com', 'Consistently exceeds sales targets'),
+    ('Faisal Mahmood', '555-5555', 'faisal@example.com', 'Outstanding customer service'),
+    ('Nadia Ali', '555-4444', 'nadia@example.com', 'Top performer in Q3'),
+    ('Aamir Khan', '555-3333', 'aamir@example.com', 'Consistently meets targets'),
+    ('Saba Ahmed', '555-2222', 'saba@example.com', 'Exceptional sales record');
+
+-- Insert data into Inventory table
+-- Example: Assume all cars have 10 units available in inventory
+INSERT INTO Inventory (car_id, quantity_available)
+SELECT car_id, 10 FROM Cars;
+
+-- Insert data into Sales table
+INSERT INTO Sales (date, customer_id, car_id, salesperson_id, sale_amount)
+VALUES
+    ('2024-05-26', 6, 6, 1, 58000),   -- Sale of Mercedes-Benz E-Class to Hina Khan by Usman Ahmed
+    ('2024-05-27', 7, 7, 2, 75000),   -- Sale of Audi A4 to Hamza Ali by Saima Ali
+    ('2024-05-28', 8, 8, 3, 83000),   -- Sale of Tesla Model S to Nida Anwar by Farhan Khan
+    ('2024-05-29', 9, 9, 4, 35000),   -- Sale of Nissan Altima to Bilal Ahmed by Faisal Mahmood
+    ('2024-05-30', 10, 10, 1, 42000),  -- Sale of Hyundai Sonata to Sadia Khan by Nadia Ali
+    ('2024-05-31', 6, 11, 2, 39000),  -- Sale of Dodge Durango to Hina Khan by Aamir Khan
+    ('2024-06-01', 7, 12, 3, 28000),  -- Sale of Ford Focus to Hamza Ali by Saba Ahmed
+    ('2024-06-02', 8, 13, 4, 48000),  -- Sale of Chevrolet Camaro to Nida Anwar by Faisal Mahmood
+    ('2024-06-03', 9, 14, 1, 31000),  -- Sale of Toyota Prius to Bilal Ahmed by Nadia Ali
+    ('2024-06-04', 10, 15, 2, 38000), -- Sale of Jeep Wrangler to Sadia Khan by Aamir Khan
+    ('2024-06-05', 6, 16, 3, 42000),  -- Sale of Honda CR-V to Hina Khan by Saba Ahmed
+    ('2024-06-06', 7, 17, 4, 59000),  -- Sale of BMW X5 to Hamza Ali by Usman Ahmed
+    ('2024-06-07', 8, 18, 1, 33000),  -- Sale of Ford Escape to Nida Anwar by Saima Ali
+    ('2024-06-08', 9, 19, 2, 25000),  -- Sale of Toyota Tacoma to Bilal Ahmed by Farhan Khan
+    ('2024-06-09', 10, 20, 3, 43000); -- Sale of Tesla Model 3 to Sadia Khan by Aamir Khan
